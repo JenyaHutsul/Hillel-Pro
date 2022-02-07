@@ -24,17 +24,20 @@ function copy(target, origin) {
 //Функция должна учитывать, что количество свойств в двух объектах может отличаться.
 
 function isEqual(a, b) {
-    if (isObj(a) && isObj(b)) {
-        const keysA = Object.keys(a).toString();
-        const keysB = Object.keys(b).toString();
-        const valueA = Object.values(a).toString();
-        const valueB = Object.values(b).toString();
-        return keysA === keysB && valueA === valueB;
+    if(!isObj(a) || !isObj(b)){
+        console.error("Передан не объект");
     }
-    console.error("Передан не объект");
-
+    debugger;
+    const keysA = Object.keys(a);
+    const keysB = Object.keys(b);
+    debugger;
+    if(keysA.length !== keysB.length) return false;
+    for(let i = 0; i < keysA.length; i++){
+        const key = keysA[i];
+        const doubleObj = isObj(a[key]) && isObj(a[key]);
+        if((!doubleObj && a[key] !== b[key]) || (doubleObj && !isEqual(a[key], b[key]))) return false;        
+    }return true;
 }
-
 
 /* Написать функцию, которая принимает строку и возвращает данные о том, сколько раз встречается каждая буква. 
 Например, если передали строку “aaabbc”, то функция должна сообщить, что буква “a” встретилась 3 раза, буква “b” встретилась 2 раза, а буква “c” - 1 раз.
