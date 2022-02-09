@@ -1,61 +1,24 @@
 function isObj(obj) {
-    return typeof obj === "object" && obj !== null;
+    return typeof obj === "object" && obj !== null && !Array.isArray(obj);
 }
-//Написать функцию copy(target, origin), которая копирует свойства из объекта origin в объект target и возвращает объект со всеми 
-//свойствами. В данном задании используйте for ... in для работы со свойствами объектов.
+/*Написать функцию “глубокого” копирования. Функция принимает один параметр и возвращает его копию “по значению”. В функцию можно передать параметр любого типа. 
+Если передали объект, то предусмотреть ситуацию, когда свойствами этого объекта будут объекты или массивы.
+Если передали массив, то предусмотреть ситуацию, когда элементами этого массива будут объекты или массивы.
+Если передали примитив - вернуть его. */
 
-function copy(target, origin) {
-    if (isObj(target) && isObj(origin)) {
-        for (key in origin) {
-            if (isObj(origin[key])) {
-                copy(target[key] = {}, origin[key])
+function copy(origin) {
+    if (isObj(origin) || Array.isArray(origin)) {
+        let target = isObj(origin) ? {} : [];
+        for (let key in origin) {
+            if (isObj(key)) {
+                target[key] = copy(target[key] = {}, origin[key]);
+            }else if(typeof key === "function"){
+                target[key] = key;
             } else {
                 target[key] = origin[key];
             }
         } return target;
-    } else {
-        console.error("Передан не объект")
+    }else{
+        return origin;
     }
-}
-
-
-
-//Напишите функцию, принимающую и сравнивающую два объекта. Если объекты содержат одинаковые ключи и значения, то функция возвращает true, если нет - false. 
-//Функция должна учитывать, что количество свойств в двух объектах может отличаться.
-
-function isEqual(a, b) {
-    if(!isObj(a) || !isObj(b)){
-        console.error("Передан не объект");
-    }
-    debugger;
-    const keysA = Object.keys(a);
-    const keysB = Object.keys(b);
-    debugger;
-    if(keysA.length !== keysB.length) return false;
-    for(let i = 0; i < keysA.length; i++){
-        const key = keysA[i];
-        const doubleObj = isObj(a[key]) && isObj(a[key]);
-        if((!doubleObj && a[key] !== b[key]) || (doubleObj && !isEqual(a[key], b[key]))) return false;        
-    }return true;
-}
-
-/* Написать функцию, которая принимает строку и возвращает данные о том, сколько раз встречается каждая буква. 
-Например, если передали строку “aaabbc”, то функция должна сообщить, что буква “a” встретилась 3 раза, буква “b” встретилась 2 раза, а буква “c” - 1 раз.
-Функция не должна использовать console.log, а должна вернуть объект с данными.
-*/
-
-function howMuch(str) {
-    if (typeof str === "string") {
-        const obj = {};
-        for (let i = 0; i < str.length; i++) {
-            let current = str[i];
-            if (obj[current]) {
-                obj[current]++;
-            } else {
-                obj[current] = 1;
-            }
-        }
-        return obj;
-    }console.error("Переданна не строка")
-}
-
+};
