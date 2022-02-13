@@ -27,13 +27,3 @@ function copy(origin) {
         }return returnValue;
     }return origin;
 };
-
-const a = {
-    1:"DSfsdfsdfs",
-    2:"dsfsdgfsdfsdf",
-    "sdfsdfsdfsdfs": {1:2,45:"Fsfs"},
-    4:[1,2,3,4,5,[1,2,3,4,5],{"SDFgdfgdf":"fgffdsgdfgdf"}],
-    5: {1:[1,3,4,5,6,4,3,2]}
-}
-let b = copy(a)
-console.log(a,b);
