@@ -7,18 +7,33 @@ function isObj(obj) {
 Если передали примитив - вернуть его. */
 
 function copy(origin) {
-    if (isObj(origin) || Array.isArray(origin)) {
-        let target = isObj(origin) ? {} : [];
-        for (let key in origin) {
-            if (isObj(key)) {
-                target[key] = copy(target[key] = {}, origin[key]);
-            }else if(typeof key === "function"){
-                target[key] = key;
-            } else {
-                target[key] = origin[key];
+    if(isObj(origin)){
+        let returnValue = {};
+        for(let key in origin){
+            if(isObj(origin[key])){
+                returnValue[key] = copy(origin[key])
+            }else{
+                returnValue[key] = origin[key]
             }
-        } return target;
-    }else{
-        return origin;
-    }
+        }return returnValue
+    }else if(Array.isArray(origin)){
+        let returnValue = [];
+        for(let key in origin){
+            if(Array.isArray(origin[key])){
+                returnValue[key] = copy(origin[key])
+            }else{
+                returnValue[key] = origin[key]
+            }
+        }return returnValue;
+    }return origin;
 };
+
+const a = {
+    1:"DSfsdfsdfs",
+    2:"dsfsdgfsdfsdf",
+    "sdfsdfsdfsdfs": {1:2,45:"Fsfs"},
+    4:[1,2,3,4,5,[1,2,3,4,5],{"SDFgdfgdf":"fgffdsgdfgdf"}],
+    5: {1:[1,3,4,5,6,4,3,2]}
+}
+let b = copy(a)
+console.log(a,b);
