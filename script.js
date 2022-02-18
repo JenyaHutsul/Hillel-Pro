@@ -1,3 +1,6 @@
-for(let i = 0; i < 10; i++){
-    caches.log(i)
+function plus(){
+    let count = 0;
+    return function(n){
+        return count += n;
+    }
 }
