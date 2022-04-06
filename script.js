@@ -1,107 +1,95 @@
-//Дано 5 квадратов, внутри каждого из которых изначально вписана цифра 0. 
-//При клике на любой квадрат цифра в нем увеличивается на один.
-//* сделать чтоб внутри квадратов были кнопки +/-
-doFirstTask(); 
-function doFirstTask(){
-    const firstTask = document.querySelector(".first-task")
-    for(let i = 0; i < 5; i++){
-        const card = createSquare(i,true);
-        card.addEventListener("click",handler)
-        firstTask.appendChild(card);
+const arrOfInputs = [];
+let objOfValue = {};
+const form = document.createElement("form");
+const body = document.body;
+
+renderForm();
+
+function renderForm(){
+    createInputs();
+    addToFormInputsAndButton();
+    body.appendChild(form);
+}
+
+function addToFormInputsAndButton(){
+    const button = createButton();
+
+
+    for(let i = 0; i < arrOfInputs.length; i++){
+        form.appendChild(arrOfInputs[i]);
+    }form.appendChild(button);
+}
+
+function createButton(){
+    const button = document.createElement("button");
+    button.type = "button";
+    button.disabled = true;
+    button.textContent = "Отправить";
+    button.classList.add("btn");
+    button.addEventListener("click", handlerButton);
+    return button;
+}
+function templateInput(type){
+    const input = document.createElement("input");
+
+    input.type = type;
+    input.placeholder = type;
+    input.classList.add("form-control")
+
+    input.addEventListener("blur", handlerInput);
+
+    return input;
+}
+
+function createInputs(){
+    const inputsType = ["email", "password"];
+    for(let i = 0; i < 2; i++){
+        arrOfInputs.push(templateInput(inputsType[i]));
     }
 }
 
-function handler(e){
-    const target = e.target;
-    if(target.className.includes("btn-success")){
-        plus(target.getAttribute("id"));
-    }else if(target.className.includes("btn-danger")){
-        minus(target.getAttribute("id"));
-    }
+
+
+function handlerInput({ target }){
+    const type = target.type;
+    const value = target.value;
+    clearClass(target);
+    const isValidValue = type === "email" ? checkEmail(value) : checkPassword(value);
+    if(isValidValue) {
+        objOfValue[type] = value;
+        target.classList.add("is-valid")
+    };
+    if(!isValidValue) target.classList.add("is-invalid");
+    
+    if(checkValues(objOfValue)){
+        const btn = document.querySelector("button");
+        btn.classList.add("btn-primary");
+        btn.disabled = false;
+    };
+}
+
+function handlerButton(e){
+    console.log(objOfValue);
+    objOfValue = {};
+    arrOfInputs.map(item => item.value = "");
+    arrOfInputs.forEach(item => clearClass(item));
+    e.target.disabled = true;
 }
 
 
-function plus(id){
-    const p = document.getElementById(id);
-    const textContent = Number(p.textContent);
-    p.textContent = textContent + 1;
+function checkValues(obj){
+    return Object.keys(obj).length === 2 ? true : false;
 }
 
-function minus(id){
-    const p = document.getElementById(id);
-    const textContent = Number(p.textContent);
-    p.textContent = textContent - 1;
-}
-function createSquare(num,flag){
-    const card = document.createElement("div");
-    card.classList.add("square");
-
-    if(flag){
-        const p = document.createElement("p");
-        const btnContainer = document.createElement("div");
-        const btnPlus = document.createElement("button");
-        const btnMinus = document.createElement("button");
-        p.classList.add("show-i");
-        p.textContent = "0";
-        p.setAttribute("id", num);
-        card.appendChild(p);
-        btnContainer.classList.add("button-container");
-
-
-        btnPlus.classList.add("btn");
-        btnPlus.setAttribute("id", num);
-        btnPlus.classList.add("btn-success");
-        btnPlus.innerText = "+"
-
-        btnMinus.classList.add("btn");
-        btnMinus.classList.add("btn-danger");
-        btnMinus.setAttribute("id", num);
-        btnMinus.innerText = "-"
-
-        btnContainer.appendChild(btnPlus);  
-        btnContainer.appendChild(btnMinus);
-        card.appendChild(btnContainer);
-    }
-    return card;
+function clearClass(target){
+    target.classList.remove("is-valid", "is-invalid");
 }
 
-
-//Дано 5 квадратов. Каждый по клику меняет цвет (синий -> зеленый -> желтый)
-doSecondTask();
-function doSecondTask(){
-    const doSecondTask = document.querySelector(".second-task");
-    for(let i = 0; i < 5; i++){
-        let count = 0;
-        const colorArr = ["blue", "green", "yellow"]
-        const card = createSquare();
-        card.addEventListener("click",function(){
-            if(count === 3) count = 0;
-            card.style.background = colorArr[count];
-            count++;
-        });
-        doSecondTask.appendChild(card);
-    }
+function checkEmail(value){
+    return /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(value);
 }
 
-//Сделать список. По клику на любой из элементов он выделяется красным цветом.
-// Если один уже выделен, а кликнули по другому, то выделение с прошлого снимается,
-// и ставится на тот, по которому кликнули
-doThirdTask();
-function doThirdTask(){
-    const ThirdTask = document.querySelector(".third-task");
-    let preTarget;
-    ThirdTask.addEventListener("click", e => {
-        const currentTarget = e.target;
-        if(currentTarget.className === "square"){
-            currentTarget.classList.add("green");
-            if(preTarget){
-                preTarget.classList.remove("green");
-            }
-            preTarget = currentTarget;
-        }
-    })
-    for(let i = 0; i < 5; i++){
-        const card = createSquare();
-        ThirdTask.appendChild(card);
-    }
+function checkPassword(value){
+    if(value.length < 8) return false;
+    return /[\d\D]+[@$#!?&]/.test(value);
 }

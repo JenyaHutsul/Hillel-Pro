@@ -1,44 +1,32 @@
-.square{
-    margin-left: 10px;
-    height: 100px;
-    width: 100px;
-    margin-top: 20px;
-    border: 1px solid #963939;
+body{
+    width: 100vw;
+    height: 100vh;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    border: 1px solid black;
+    padding: 20px 40px;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-}
-.square:first-child{
-    margin-left: 0;
-}
-
-.first-task,
-.second-task,
-.third-task {
-    display: flex;
-    justify-content: center;
-}
-span{
-    display: flex;
-    justify-content: center;
-}
-.container {
-    margin-bottom: 20px;
-}
-.container:last-child {
-    margin-bottom: 0;
-}
-
-.btn {
-    margin-left: 5px;
-}
-
-.green{
-    background-color: green;
 }
 
 
+input{
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+input::placeholder{
+    font-size: 24px;
+    transition: all .3s;
+}
+input:focus::placeholder{
+    color: transparent;
+    transition: all .3s;
+}
 
