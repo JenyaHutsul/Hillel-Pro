@@ -53,18 +53,24 @@ function createInputs(){
 function handlerInput({ target }){
     const type = target.type;
     const value = target.value;
+    const btn = document.querySelector("button");
     clearClass(target);
     const isValidValue = type === "email" ? checkEmail(value) : checkPassword(value);
     if(isValidValue) {
         objOfValue[type] = value;
         target.classList.add("is-valid")
     };
-    if(!isValidValue) target.classList.add("is-invalid");
+    if(!isValidValue) {
+        target.classList.add("is-invalid");
+        delete objOfValue[type];
+    };
     
     if(checkValues(objOfValue)){
-        const btn = document.querySelector("button");
         btn.classList.add("btn-primary");
         btn.disabled = false;
+    }else{
+        btn.disabled = true;
+        btn.classList.remove("btn-primary");
     };
 }
 
