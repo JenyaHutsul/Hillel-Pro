@@ -12,7 +12,14 @@ function mesObj(){
     const mesObj = {};
 
     if(localStorage){
-        const data = JSON.parse(localStorage.getItem("obj"));
+        let data = localStorage.getItem("obj");
+        try{
+            data = JSON.parse(data);
+        }catch{
+            console.log("Проблема с данными");
+            localStorage.clear();
+            return null;
+        }
         for (const i in data) {
             mesObj[i] = i;
             ul.appendChild(createLi(i));
