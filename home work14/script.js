@@ -5,6 +5,9 @@ const input = document.querySelector("input");
 const saveBtn = document.querySelector(".send-button");
 const ul = document.querySelector("ul");
 
+
+
+const messageObj = mesObj();
 function mesObj(){
     const mesObj = {};
 
@@ -12,7 +15,7 @@ function mesObj(){
         const data = JSON.parse(localStorage.getItem("obj"));
         for (const i in data) {
             mesObj[i] = i;
-            createLi(i);
+            ul.appendChild(createLi(i));
         }
     }
 
@@ -32,7 +35,6 @@ function mesObj(){
     return { add, remove, show, obj}
 };
 
-const messageObj = mesObj();
 
 input.addEventListener("input", ()=> isAvailableButton(saveBtn));
 
@@ -49,10 +51,6 @@ wrapper.addEventListener("click", e =>{
     }   
 })
 
-const eventName = ["mouseover", "mouseleave"];
-
-
-
 
 function deleteButton(target){
     const li = target.parentElement;
@@ -65,7 +63,7 @@ function deleteButton(target){
 
 function sendButton(value){
     messageObj.add(value);
-    createLi(value);
+    ul.appendChild(createLi(value));
     localStorage.setItem("obj", JSON.stringify(messageObj.obj()));
 }
 
@@ -94,13 +92,13 @@ function createLi(value){
 
 
     delteButton.textContent = "Удалить";
-    delteButton.classList.add("btn-dark");
+    delteButton.classList.add("btn-danger");
 
 
 
     li.appendChild(span);
     li.appendChild(delteButton);
-    ul.appendChild(li);
+    return li;
 }
 
 function createElement(type,className){
