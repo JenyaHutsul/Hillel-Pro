@@ -1,0 +1,25 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+.wrapper{
+    height: 100%;
+    width: 30%;
+}
+
+.button-div{
+    display: flex;
+    justify-content: center;
+}
+
+.next-button{
+    margin-left: 20px;
+}
+
+ol{
+    min-height: 85%;
+    border: 1px solid red;
+}
