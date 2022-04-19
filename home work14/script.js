@@ -6,60 +6,61 @@ const saveBtn = document.querySelector(".send-button");
 const ul = document.querySelector("ul");
 
 
-
 const messageObj = mesObj();
-function mesObj(){
-    const mesObj = {};
+function mesObj() {
+    const mesObj = loadFromLocalStorage();
 
-    if(localStorage){
-        let data = localStorage.getItem("obj");
-        try{
-            data = JSON.parse(data);
-        }catch{
-            console.log("Проблема с данными");
-            localStorage.clear();
-            return null;
-        }
-        for (const i in data) {
-            mesObj[i] = i;
-            ul.appendChild(createLi(i));
-        }
-    }
-
-    function add(key){
+    function add(key) {
         mesObj[" " + key] = key;
     }
-    function remove(key){
+    function remove(key) {
         delete mesObj[key];
     }
-    function show(){
+    function show() {
         console.log(mesObj)
     }
 
-    function obj(){
+    function obj() {
         return mesObj;
     }
-    return { add, remove, show, obj}
+    return { add, remove, show, obj }
 };
 
+function loadFromLocalStorage(){
+    let data = localStorage.getItem("obj");
+    const obj = {};
+    try{
+        data = JSON.parse(data);
+    }catch{
+        console.log("Ошибка данных");
+        return {};
+    }
+    for (const key in data) {
+        obj[key] = key;
+        ul.appendChild(createLi(key))
+    }
+    return obj;
+}
 
-input.addEventListener("input", ()=> isAvailableButton(saveBtn));
 
 
-wrapper.addEventListener("click", e =>{
+input.addEventListener("input", () => isAvailableButton(saveBtn));
+
+
+wrapper.addEventListener("click", e => {
     const target = e.target;
-    if(target.className.includes("send-button")) {
+    if (target.className.includes("send-button")) {
         sendButton(input.value);
         input.value = "";
-        isAvailableButton(saveBtn);  
+        isAvailableButton(saveBtn);
     };
-    if(target.className.includes("delete-button")){
+    if (target.className.includes("delete-button")) {
         deleteButton(target);
-    }   
+    }
 })
 
 
-function deleteButton(target){
+function deleteButton(target) {
     const li = target.parentElement;
     const span = target.previousSibling;
     messageObj.remove(span.textContent);
@@ -68,18 +69,18 @@ function deleteButton(target){
 
 }
 
-function sendButton(value){
+function sendButton(value) {
     messageObj.add(value);
     ul.appendChild(createLi(value));
     localStorage.setItem("obj", JSON.stringify(messageObj.obj()));
 }
 
-function isAvailableButton(target){
+function isAvailableButton(target) {
 
     target.disabled = !Boolean(input.value);
-    if(target.disabled) {
+    if (target.disabled) {
         target.classList.add("btn-secondary");
-    }else{
+    } else {
         target.classList.remove("btn-secondary");
     };
 
@@ -88,13 +89,13 @@ function isAvailableButton(target){
 
 
 
-function createLi(value){
+function createLi(value) {
     const li = createElement("li", "li-item");
     const span = createElement("span", "li-span");
     const delteButton = createElement("button", "delete-button");
 
     li.classList.add("list-group-item");
-    
+
     span.textContent = value;
 
 
@@ -108,17 +109,17 @@ function createLi(value){
     return li;
 }
 
-function createElement(type,className){
+function createElement(type, className) {
     const el = document.createElement(type);
     el.classList.add(className);
     return el;
 }
 
-function makeLayout(){
+function makeLayout() {
     const TYPE_ARR = ["div", "form", "input", "button", "ul"];
     const CLASS_NAME = ["wrapper", "form", "save-input", "send-button", "ul-list"];
 
-    const DOM_ARR = TYPE_ARR.map((item,i) => createElement(item,CLASS_NAME[i]));
+    const DOM_ARR = TYPE_ARR.map((item, i) => createElement(item, CLASS_NAME[i]));
 
     //input
     DOM_ARR[2].placeholder = "Введите текст";
