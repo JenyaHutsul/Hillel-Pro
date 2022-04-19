@@ -5,8 +5,10 @@ const input = document.querySelector("input");
 const saveBtn = document.querySelector(".send-button");
 const ul = document.querySelector("ul");
 
+input.addEventListener("input", () => isAvailableButton(saveBtn));
 
 const messageObj = mesObj();
+appendLiItemsToUl(ul,loadFromLocalStorage())
 function mesObj() {
     const mesObj = loadFromLocalStorage();
 
@@ -37,11 +39,18 @@ function loadFromLocalStorage(){
     }
     for (const key in data) {
         obj[key] = key;
-        ul.appendChild(createLi(key))
     }
     return obj;
 }
 
+function appendLiItemsToUl(ul,data){
+    if(!data){
+        console.log("Нечего добавлять");
+    }
+    for(const key in data){
+        ul.appendChild(createLi(key))
+    }
+}
 
 
 input.addEventListener("input", () => isAvailableButton(saveBtn));
@@ -76,7 +85,6 @@ function sendButton(value) {
 }
 
 function isAvailableButton(target) {
-
     target.disabled = !Boolean(input.value);
     if (target.disabled) {
         target.classList.add("btn-secondary");
