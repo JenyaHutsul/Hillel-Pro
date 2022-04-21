@@ -40,14 +40,13 @@ function sendReques(id){
     return new Promise((resolve, reject)=>{
         fetch(`https://rickandmortyapi.com/api/character/?page=${id}`)
         .then(response => {
+            console.log(1)
             getDataButton.textContent = "Загружаю";
-            getDataButton.disabled = true;
             resolve(response.json())
         })
         .catch(err => reject(err))
         .finally(()=>{
             getDataButton.textContent = "Data";
-            getDataButton.disabled = false;
         })
     })
 }

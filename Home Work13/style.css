@@ -1,0 +1,32 @@
+body{
+    width: 100vw;
+    height: 100vh;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    border: 1px solid black;
+    padding: 20px 40px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+input{
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+input::placeholder{
+    font-size: 24px;
+    transition: all .3s;
+}
+input:focus::placeholder{
+    color: transparent;
+    transition: all .3s;
+}
+
