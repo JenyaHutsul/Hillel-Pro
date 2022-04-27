@@ -3,8 +3,7 @@ document.body.appendChild(createLayout());
 const getDataButton = document.querySelector(".get-data");
 const spanCount = document.querySelector(".counter");
 const ol = document.querySelector("ol");
-let maxPage = sendReques(1,getDataButton)
-    .then(res => maxPage = res.info.pages)
+
 
 getDataButton.addEventListener("click", handler);
 
@@ -30,39 +29,48 @@ function handler(e){
 
 function getDataButtonFn(){
     spanCount.textContent++;
-    isAvailableButon(Number(spanCount.textContent));
-    sendReques(spanCount.textContent).then(res => createLi(res))
-    .catch(err => new Error(err))
+    sendReques(spanCount.textContent)
+    .then(res => {
+        createLi(res)
+        if(!res.info.next){
+            disabledBtn()
+            delFlex(ol)
+        }
+    })
+    .catch(err => new Error(err));
 
 }
 
+function disabledBtn(){
+    const nextbtn = document.querySelector(".get-data");
+        nextbtn.disabled = true;
+        nextbtn.classList.add("btn-dark");
+}
+
+function delFlex(item){
+    item.style.display = "block"
+}
+
 function sendReques(id){
-    return new Promise((resolve, reject)=>{
-        fetch(`https://rickandmortyapi.com/api/character/?page=${id}`)
+    return fetch(`https://rickandmortyapi.com/api/character/?page=${id}`)
         .then(response => {
-            getDataButton.textContent = "Загружаю";
-            getDataButton.disabled = true;
-            resolve(response.json())
+            if(response.status === 200){
+                getDataButton.textContent = "Загружаю";
+                getDataButton.disabled = true;
+                return response.json()
+            }
+            Promise.reject(response)
         })
         .catch(err => reject(err))
         .finally(()=>{
             getDataButton.textContent = "Data";
             getDataButton.disabled = false;
         })
-    })
 }
 
 
 
-function isAvailableButon(count){//переделать
-    const nextbtn = document.querySelector(".get-data");
-    nextbtn.disabled = false;
-    nextbtn.classList.remove("btn-dark");
-    if(count >= maxPage) {
-        nextbtn.disabled = true;
-        nextbtn.classList.add("btn-dark");
-    };
-}
+
 
 function createLi(res){
     ol.textContent = "";
@@ -74,6 +82,8 @@ function createLi(res){
         ol.appendChild(li);
     });
 }
+
+
 function createLayout(){
     const wrapper = document.createElement("div");
     wrapper.classList.add("wrapper");
