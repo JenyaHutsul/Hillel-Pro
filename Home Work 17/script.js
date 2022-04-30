@@ -7,7 +7,6 @@ setInterval(() => {
 }, 1000);
 
 function createTimeObj(date = new Date) {
-    console.log(date)
     const h = date.getHours();
     const m = date.getMinutes();
     const s = date.getSeconds();
