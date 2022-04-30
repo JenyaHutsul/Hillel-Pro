@@ -1,0 +1,21 @@
+body{
+    width: 100vw;
+    height: 100vh;
+    background-color:  black;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper{
+    display: flex;
+    font-size: 17rem;
+}
+
+.min,
+.sec{
+    margin-left: 5rem;
+}
+
