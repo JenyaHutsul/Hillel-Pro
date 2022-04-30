@@ -16,7 +16,6 @@ function createTimeObj(date = new Date) {
 
 
 function renderClock(dateString,el) {
-    console.log(dateString)
     el.textContent = dateString;
 } 
 
