@@ -1,42 +1,39 @@
-document.body.appendChild(createLayout())
+setInterval(() => {
+    document.body.textContent = "";
+    document.body.appendChild(renderClock(createTimeObj()))
+}, 1000);
 
+function createTimeObj(date = new Date) {
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const s = date.getSeconds();
 
-function clock(){
-    const date = new Date();
-    const hourDiv = document.querySelector(".hour");
-    const minDiv = document.querySelector(".min");
-    const secDiv = document.querySelector(".sec");
-    
-    const hour = addZero(date.getHours());
-    const min = addZero(date.getMinutes());
-    const sec = addZero(date.getSeconds());
-
-    hourDiv.textContent = hour + ":";
-    minDiv.textContent = min + ":";
-    secDiv.textContent = sec;
-    
-
-    function addZero(i){
-        return i >= 10 ? i : "0" + i;
+    return {
+        h,m,s,
     }
-    
 }
 
-setInterval(clock,1000);
 
+function renderClock(dateString) {
+    const wrapper = createEl("div", "wrapper");
+    const hourDiv = createEl("div", "hour");
+    const minDiv = createEl("div", "min");
+    const secDiv = createEl("div", "sec");
+    hourDiv.textContent = dateString.h + " : ";
+    minDiv.textContent = dateString.m + " : ";
+    secDiv.textContent = dateString.s;
 
-function createLayout(){
-    const arr = [];
-    const wrapper = createEl("div","wrapper");
-    arr.push(createEl("div", "hour"));
-    arr.push(createEl("div", "min"));
-    arr.push(createEl("div", "sec"));
-    arr.forEach(item => wrapper.appendChild(item));
+    wrapper.appendChild(hourDiv);
+    wrapper.appendChild(minDiv);
+    wrapper.appendChild(secDiv);
 
-    function createEl(type,_class){
-        const el = document.createElement(type);
-        el.classList.add(_class);
-        return el;
-    }
-    return wrapper
+    return wrapper;
+} 
+
+function createEl(type, _class){
+    const el =  document.createElement(type);
+    el.classList.add(_class);
+    return el;
 }
+
+
