@@ -1,12 +1,12 @@
-class Form{
+class Form {
     #el;
-    constructor(props){
+    constructor(props) {
         this.#el = document.createElement("form");
         this.#el.classList.add(props.class);
 
-        this.input = new Input({class: "user-input" });
+        this.input = new Input({ class: "user-input" });
 
-        this.button = new Button({class: "btn"});
+        this.button = new Button({ class: "btn" });
 
         this.chatArea = new ChatArea();
 
@@ -16,32 +16,29 @@ class Form{
 
     }
 
-    handlerInput(){
-        this.input.onChange(value =>{
-            if(value){
-                console.log(value)
+    handlerInput() {
+        this.input.onChange(value => {
+            if (value) {
                 this.button.isDisabled(false);
-            }else{
+            } else {
                 this.button.isDisabled(true)
             }
         })
     }
 
-    handlerButton(){
-        this.button.sendMes((e)=>{
+
+    handlerButton() {
+        this.button.sendMes((e) => {
             const el = this.chatArea.returnEl();
-            new MessageItem(userMessage=>{
+            new MessageItem(userMessage => {
                 el.appendChild(userMessage(this.input.returnValue()));
                 this.button.isDisabled(true);
             });
             this.input.clearValue();
 
-            setTimeout(()=>{
+            setTimeout(() => {
                 new MessageItem((userMessage, botMessage) => {
-                    console.log("в сет таймауте", this.input.returnValue().call(new Input({
-                        class : "user-input",
-                    })))
-                    el.appendChild(botMessage(this.botSpeach(this.input.returnValue())))
+                    el.appendChild(botMessage(this.botSpeach()));
                 });
             }, 1000);
 
@@ -49,11 +46,11 @@ class Form{
         })
     }
 
-    render(){
+    render() {
         this.handlerInput();
         this.handlerButton();
-        [this.input,this.button].map(item => this.#el.appendChild(item.render()));
+        [this.input, this.button].map(item => this.#el.appendChild(item.render()));
         return this.#el;
     }
-    
+
 }

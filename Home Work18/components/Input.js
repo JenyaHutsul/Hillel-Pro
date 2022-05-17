@@ -13,7 +13,7 @@ class Input{
         })
     }
 
-    returnValue(){
+    returnValue(x){
         return this.#el.value;
     }
 
