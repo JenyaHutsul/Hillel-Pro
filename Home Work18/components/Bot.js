@@ -75,12 +75,3 @@ class Bot {
 
 
 
-
-const Nikita = new Bot();
-//Nikita.speachWithDelay(2000);
-//Nikita.speachWithDelay(3000);
-//Nikita.speachWithDelay(4000);
-//Nikita.speachWithDelay(5000);
-//Nikita.speachWithDelay(6000);
-//Nikita.speachWithDelay(7000);
-//Nikita.speachWithDelay(8000);
